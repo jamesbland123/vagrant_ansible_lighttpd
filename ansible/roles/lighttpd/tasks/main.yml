@@ -1,0 +1,47 @@
+- name: install lighttpd
+  yum:
+    name: lighttpd
+    state: present
+
+- name: set directory owner and group to lighttpd   
+  file:
+    path: /srv/bogusapp/public
+    state: directory
+    owner: lighttpd
+    group: lighttpd
+    mode: 0755
+    recurse: yes
+
+- name: lighttpd.conf template
+  template:
+    src: lighttpd.j2
+    dest: /etc/lighttpd/lighttpd.conf
+    owner: lighttpd
+    group: lighttpd
+    mode: 0644
+
+- name: vhosts.conf template
+  template:
+    src: vhosts.j2
+    dest: /etc/lighttpd/vhosts.d/vhosts.conf
+    owner: lighttpd
+    group: lighttpd
+    mode: 0644
+
+- name: add web_host to /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    insertafter: EOF
+    state: present
+    line: "127.0.0.1 {{ web_host }}"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: enable and start lighttpd
+  service:
+    name: lighttpd
+    enabled: yes
+    state: started
+
+

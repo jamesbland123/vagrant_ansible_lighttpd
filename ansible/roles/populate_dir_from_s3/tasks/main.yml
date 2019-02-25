@@ -1,0 +1,30 @@
+- name: create directory /srv/bogusapp
+  file:
+    path: /srv/bogusapp
+    state: directory
+
+- name: populate /srv/bogusapp/ with S3 contents
+  aws_s3:
+    aws_access_key: "{{ aws_access_key_id }}"
+    aws_secret_key: "{{ aws_secret_key_id }}"
+    region: us-west-2
+    bucket: bogus-app-homework
+    object: homework.tar.gz
+    dest: /srv/bogusapp/homework.tar.gz
+    mode: get
+
+- name: extract homework.tar.gz
+  unarchive:
+    src: /srv/bogusapp/homework.tar.gz
+    dest: /srv/bogusapp
+    copy: no
+
+- name: allow lighttpd to read from /srv
+  sefcontext:
+    target: '/srv(/.*)?'
+    setype: httpd_sys_content_t
+    state: present
+
+- name: apply selinux to /srv
+  command: restorecon -irv /srv
+

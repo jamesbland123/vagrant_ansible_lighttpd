@@ -1,0 +1,16 @@
+#######################################################################
+##
+## For more examples check:
+##
+## https://redmine.lighttpd.net/projects/lighttpd/wiki/Docs_Configuration
+##
+$HTTP["host"] == "{{ web_host }}" {
+
+  server.document-root = "{{ web_document_root }}"
+  
+}
+
+$SERVER["socket"] == "192.168.52.101:80" {
+  
+  server.document-root = "{{ web_document_root }}"
+}

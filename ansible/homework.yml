@@ -1,0 +1,12 @@
+---
+- hosts: all
+  vars:
+    web_host: "homework.example.com"
+    web_document_root: "/srv/bogusapp/public"
+  roles:
+  - add_repo_and_deps
+  - populate_dir_from_s3
+  - lighttpd
+  tasks:
+  - debug: 
+      msg: "To Test: vagrant ssh; curl {{ web_host }} or http://localhost:8080 on the host machine browser"

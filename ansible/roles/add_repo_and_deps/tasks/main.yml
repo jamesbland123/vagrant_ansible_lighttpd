@@ -1,0 +1,38 @@
+- name: Add repository
+  yum_repository:
+    name: epel
+    description: EPEL YUM repo
+    baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+    gpgcheck: no
+
+- name: install python pip
+  yum:
+    name: python-pip
+    state: present
+
+- name: install boto dependency for ansible aws 
+  pip: 
+    name: boto
+
+- name: install botocore dependency for ansible aws 
+  pip: 
+    name: botocore
+
+- name: install boto3 dependency for ansible aws 
+  pip: 
+    name: boto3
+
+- name: install net-tools
+  yum:
+    name: net-tools
+    state: present
+
+- name: install libselinux-python
+  yum:
+    name: libselinux-python
+    state: present
+
+- name: install policycoreutils-python
+  yum:
+    name: policycoreutils-python
+    state: present
